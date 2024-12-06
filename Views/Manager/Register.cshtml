@@ -1,0 +1,60 @@
+﻿@model MvcCoreUploadAndDisplayImage_Demo.Models.ManagerViewModel
+<script src="https://maps.googleapis.com/maps/api/js?key=@ViewBag.GoogleApiKey&libraries=places"></script>
+<h2>Register as a Landlord</h2>
+
+<form asp-action="Register" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="FullName"></label>
+        <input asp-for="FullName" class="form-control" readonly />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" readonly />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PhoneNumber"></label>
+        <input asp-for="PhoneNumber" class="form-control" readonly />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Address" class="control-label"></label>
+        <input asp-for="Address" class="form-control" id="address" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="IdentityDocument"></label>
+        <input asp-for="IdentityDocument" class="form-control-file" />
+        <span asp-validation-for="IdentityDocument" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="OwnershipDocument"></label>
+        <input asp-for="OwnershipDocument" class="form-control-file" />
+        <span asp-validation-for="OwnershipDocument" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ProfilePicture"></label>
+        <input asp-for="ProfilePicture" class="form-control-file" />
+        <span asp-validation-for="ProfilePicture" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
+<script>
+    // Initialize Google Places Autocomplete for address input
+    function initAutocomplete() {
+        var input = document.getElementById('address');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+
+        // Optional: Restrict results to South Africa
+        autocomplete.setComponentRestrictions({ 'country': ['za'] });
+
+        autocomplete.addListener('place_changed', function () {
+            var place = autocomplete.getPlace();
+            // You can add any additional logic here if needed
+        });
+    }
+
+    google.maps.event.addDomListener(window, 'load', initAutocomplete);
+
+</script>

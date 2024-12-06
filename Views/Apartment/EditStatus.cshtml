@@ -1,0 +1,22 @@
+﻿@model MvcCoreUploadAndDisplayImage_Demo.Models.EditStatusViewModel
+
+@{
+    ViewData["Title"] = "Edit Status";
+}
+
+<h2>Edit Status</h2>
+
+<form asp-action="EditStatus">
+    <div class="form-group">
+        <label asp-for="Status" class="control-label"></label>
+        <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<MvcCoreUploadAndDisplayImage_Demo.Models.ApartmentStatus>()"></select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

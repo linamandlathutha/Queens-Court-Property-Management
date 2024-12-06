@@ -1,0 +1,31 @@
+﻿@model IEnumerable<MvcCoreUploadAndDisplayImage_Demo.Models.Reservation>
+
+@{
+    ViewData["Title"] = "Reservations";
+}
+
+<h1>Reservations</h1>
+
+<div class="row">
+    @foreach (var reservation in Model)
+    {
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        Reservation ID: @reservation.ReservationId
+                    </div>
+                    <div class="card-body">
+                          <h5 class="card-title">Apartment: @reservation.Apartment.ApartmentName</h5>
+                        <p class="card-text"><strong>Customer Name:</strong> @reservation.CustomerName</p>
+                        <p class="card-text"><strong>Email:</strong> @reservation.CustomerEmail</p>
+                        <p class="card-text"><strong>Phone:</strong> @reservation.PhoneNumber</p>
+                        <p class="card-text"><strong>Reservation Date:</strong> @reservation.ReservationDate.ToShortDateString()</p>
+                        <p class="card-text"><strong>Viewing Time:</strong> @reservation.ViewingDate.ToString(@"hh\:mm")</p>
+                    </div>
+                    <div class="card-footer">
+                        <a asp-action="ResendEmail" asp-route-id="@reservation.ReservationId" class="btn btn-warning">Resend Email</a>
+                    </div>
+                </div>
+            </div>
+    }
+</div>

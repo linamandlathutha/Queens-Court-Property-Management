@@ -1,0 +1,97 @@
+﻿@model MvcCoreUploadAndDisplayImage_Demo.Models.ReportApartment
+<script src="https://maps.googleapis.com/maps/api/js?key=@ViewBag.GoogleApiKey&libraries=places"></script>
+@{
+    ViewData["Title"] = "Create Report Apartment";
+}
+
+<h1>Report Apartment</h1>
+
+
+<hr />
+
+<form asp-action="Create">
+ 
+    <div class="form-group">
+        <label asp-for="ApartmentName" class="control-label"></label>
+        <input asp-for="ApartmentName" class="form-control" />
+        <span asp-validation-for="ApartmentName" class="text-danger"></span>
+    </div>
+
+
+    
+
+
+
+<div class="form-group">
+    <label asp-for="Problem">Problem</label>
+    <select asp-for="Problem" class="form-control">
+        <option value="">-- Select a Problem --</option>
+        @if (ViewBag.ProblemList != null)
+{
+            @foreach (var problem in ViewBag.ProblemList)
+            {
+                <option value="@problem.Value">@problem.Text</option>
+            }
+}
+    </select>
+    <span asp-validation-for="Problem" class="text-danger"></span>
+</div>
+
+
+
+
+    <div class="form-group">
+        <label asp-for="ReportDescription" class="control-label"></label>
+        <textarea asp-for="ReportDescription" class="form-control"></textarea>
+        <span asp-validation-for="ReportDescription" class="text-danger"></span>
+    </div>
+ <!-- Hidden field for ReportDate -->
+<input type="hidden" asp-for="ReportDate" value="@Model.ReportDate.ToString("yyyy-MM-ddTHH:mm:ss")" />
+
+    <div class="form-group">
+        <label asp-for="Email" class="control-label"></label>
+        <input asp-for="Email" class="form-control" id="email"  />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+
+
+   
+  
+
+</form>
+  
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            // Attach a change event handler to the apartment dropdown
+            $('#apartmentDropdown').change(function () {
+                var apartmentId = $(this).val();
+
+                if (apartmentId) {
+                    // Make an AJAX call to fetch the address and email for the selected apartment
+                    $.ajax({
+                        url: '@Url.Action("GetApartmentDetails", "ReportApartment")', // Adjust the URL as needed
+                        type: 'GET',
+                        data: { apartmentId: apartmentId },
+                        success: function (data) {
+                            // Populate the address and email fields with the returned data
+                            $('#address').val(data.address);
+                            $('#email').val(data.email);
+                        }
+                    });
+                } else {
+                    // Clear the address and email fields if no apartment is selected
+                    $('#address').val('');
+                    $('#email').val('');
+                }
+            });
+        });
+    </script>
+}

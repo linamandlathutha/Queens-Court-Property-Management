@@ -1,0 +1,84 @@
+﻿@model MvcCoreUploadAndDisplayImage_Demo.Models.Test
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Test</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           
+<div class="form-group">
+    <label class="control-label">Select Manager:</label>
+    <select id="ManagerEmail" class="form-control" onchange="updateEmail()">
+        <option value="">-- Select Manager --</option>
+        @foreach (var manager in ViewBag.PendingManagers)
+        {
+            <option value="@manager.Email">@manager.Email</option> <!-- Store email as value -->
+        }
+    </select>
+    <span asp-validation-for="Email" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Email" class="control-label"></label>
+    <input asp-for="Email" class="form-control" readonly id="Email" /> <!-- Make email field read-only -->
+    <span asp-validation-for="Email" class="text-danger"></span>
+</div>
+
+           <div class="form-group">
+        <label asp-for="Password" class="control-label"></label>
+        <input asp-for="Password" class="form-control" id="Password" readonly />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+             
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+@section Scripts {
+        <script>
+            function updateEmail() {
+                var select = document.getElementById('ManagerEmail'); // Use ManagerEmail instead of ManagerId
+                var emailInput = document.getElementById('Email');
+
+                // Get the selected manager's email (value of the selected option)
+                var selectedEmail = select.value; // Get the email directly from the value
+                emailInput.value = selectedEmail; // Set email input value
+            }
+        </script>
+
+
+}
+
+              <script>
+        function generatePassword() {
+            var length = 16; // Password length
+            var charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!#$%^&*()_+~`|}{[]:;?><,./-=";
+            var password = "";
+            for (var i = 0, n = charset.length; i < length; ++i) {
+                password += charset.charAt(Math.floor(Math.random() * n));
+            }
+
+            // Set the generated password to the Password field
+            document.getElementById("Password").value = password;
+        }
+
+        // Call generatePassword on page load to automatically fill the password field
+        document.addEventListener("DOMContentLoaded", function () {
+            generatePassword();
+        });
+    </script>

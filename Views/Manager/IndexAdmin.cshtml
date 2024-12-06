@@ -1,0 +1,45 @@
+﻿@model IEnumerable<MvcCoreUploadAndDisplayImage_Demo.Models.Manager>
+
+@{
+    ViewData["Title"] = "Managers List";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p>
+    <a asp-action="Register" class="btn btn-primary">Create New Manager</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Address</th>
+            <th>Profile Picture</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var manager in Model)
+        {
+            <tr>
+                <td>@manager.FullName</td>
+                <td>@manager.Email</td>
+                <td>@manager.PhoneNumber</td>
+                <td>@manager.Address</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(manager.ProfilePicture))
+                    {
+                        <img src="@Url.Content($"~/profilePics/{manager.ProfilePicture}")" alt="Profile Picture" style="width: 100px;" />
+                    }
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@manager.Id" class="btn btn-info">Details</a>
+                    <a asp-action="Delete" asp-route-id="@manager.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

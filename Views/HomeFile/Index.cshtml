@@ -1,0 +1,63 @@
+﻿@model IEnumerable<MvcCoreUploadAndDisplayImage_Demo.Models.LeaseAgreementViewModel>
+
+@{
+    ViewData["Title"] = "Lease Agreements";
+}
+
+<h2 class="text-center">Lease Agreements</h2>
+
+<div class="container mt-4">
+    @if (Model.Any())
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Address</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+                    <th>Lease Upload Date</th>
+                    <th>Occupation</th>
+                    <th>Identification Number</th>
+                    <th>Files</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.FullName</td>
+                        <td>@item.Address</td>
+                        <td>@item.PhoneNumber</td>
+                        <td>@item.Email</td>
+                        <td>@item.DateOfBirth</td>
+                        <td>@item.Occupation</td>
+                        <td>@item.IdentificationNumber</td>
+                        <td>
+                            @foreach (var file in item.Files)
+                            {
+                                <a href="@Url.Action("Download", "HomeFile", new { filename = file.Name })" target="_blank">@file.Name</a>
+
+                                <br />
+                            }
+                        </td>
+                        <td>
+                            @foreach (var file in item.Files)
+                            {
+                                <form method="post" action="@Url.Action("DeleteFile", "HomeFile")" style="display:inline;">
+                                    <input type="hidden" name="filename" value="@file.Name" />
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="text-center">No lease agreements found.</p>
+    }
+</div>

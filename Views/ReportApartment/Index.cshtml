@@ -1,0 +1,51 @@
+﻿@model IEnumerable<MvcCoreUploadAndDisplayImage_Demo.Models.ReportApartment>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="text-center">Apartment Reports</h1>
+
+<p>
+    <a class="btn btn-primary mb-3" asp-action="Create">Create New</a>
+</p>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                       
+                        <h6 class="card-subtitle mb-2 text-muted">Apartment: @item.ApartmentName</h6>
+
+                        <p class="card-text">
+                            <strong>Description:</strong> @item.ReportDescription
+                        </p>
+
+                   
+
+                        <p class="card-text">
+                            <strong>Date:</strong> @item.ReportDate.ToString("yyyy-MM-dd")
+                        </p>
+                        <p class="card-text">
+                            <strong>Email:</strong> @item.Email
+                        </p>
+                        <p class="card-text">
+                            <strong>Status:</strong> @(item.IsResolved ? "Resolved" : "Unresolved")
+                        </p>
+
+                        <div class="d-flex justify-content-between">
+                            <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.Id">Details</a>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                                    <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        }
+                        </div>
+                    </div>
+                </div>
+            </div>
+    }
+</div>

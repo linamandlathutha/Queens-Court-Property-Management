@@ -1,0 +1,40 @@
+﻿@model IEnumerable<MvcCoreUploadAndDisplayImage_Demo.Models.Apartment>
+
+@{
+    ViewData["Title"] = "Apartment List";
+}
+
+<h2>Apartment List</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Apartment Name</th>
+            <th>Manager Email</th>
+
+            <th>Location</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Monthly Rent</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var apartment in Model)
+        {
+            <tr>
+                <td>@apartment.ApartmentName</td>
+                <td>@apartment.Email</td>
+
+                <td>@apartment.Location</td>
+                <td>@apartment.Type</td>
+                <td>@apartment.Status</td>
+                <td>@apartment.MonthlyRent</td>
+                <td>
+                    <a href="@Url.Action("Details", "Apartment", new { id = apartment.Id })" class="btn btn-info">Details</a>
+                    <a href="@Url.Action("EditStatus", "Apartment", new { id = apartment.Id })" class="btn btn-warning">Availability Status</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

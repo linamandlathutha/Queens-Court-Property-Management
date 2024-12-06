@@ -1,0 +1,117 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log In";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .login-container {
+            margin-top: 5%;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+        }
+
+            .login-container h1 {
+                font-size: 2rem;
+                color: #343a40;
+            }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            font-weight: 600;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                border-color: #004085;
+            }
+
+        .form-control {
+            border-radius: 0.3rem;
+            box-shadow: none;
+        }
+
+        .form-label {
+            font-weight: 600;
+        }
+
+        .form-check-label {
+            font-weight: 400;
+        }
+
+        .text-muted {
+            color: #6c757d !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 col-xl-4">
+                <div class="login-container">
+                    <h1 class="text-center mb-4">@ViewData["Title"]</h1>
+
+                    <form id="account" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                            <label asp-for="Input.Email" class="form-label">Email</label>
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Password" type="password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Password" />
+                            <label asp-for="Input.Password" class="form-label">Password</label>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-check mb-4">
+                            <input asp-for="Input.RememberMe" class="form-check-input" type="checkbox" />
+                            <label asp-for="Input.RememberMe" class="form-check-label">
+                                @Html.DisplayNameFor(m => m.Input.RememberMe)
+                            </label>
+                        </div>
+
+                        <div class="d-grid">
+                            <button id="login-submit" type="submit" class="btn btn-primary btn-lg">Log In</button>
+                        </div>
+                    </form>
+
+                    <div class="mt-4 text-center">
+                        <p class="mb-2">
+                            <a id="forgot-password"  asp-action="ForgotPassword" asp-controller="Account" class="text-decoration-none text-muted">Forgot your password?</a>
+                        </p>
+                        <p class="mb-2">
+                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-decoration-none text-muted">Register as a new user</a>
+                        </p>
+                        <p>
+                            <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="text-decoration-none text-muted">Resend email confirmation</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+</body>
+</html>

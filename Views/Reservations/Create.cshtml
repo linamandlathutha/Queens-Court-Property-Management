@@ -1,0 +1,80 @@
+﻿@model MvcCoreUploadAndDisplayImage_Demo.Models.ReservationViewModel
+
+@{
+    ViewData["Title"] = "Create Reservation";
+}
+
+<h1>Create Reservation</h1>
+
+<h4>Reservation</h4>
+<hr />
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input asp-for="ApartmentId" type="hidden" />
+
+ 
+
+    <!-- ReservationDate (Date Only) -->
+    <div class="form-group">
+        <label asp-for="ReservationDate" class="control-label">Reservation Date</label>
+        <input asp-for="ReservationDate" class="form-control" type="date" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+        <span asp-validation-for="ReservationDate" class="text-danger"></span>
+    </div>
+
+    <!-- ViewingDate (Date and Time) -->
+  <div class="form-group">
+    <label asp-for="ViewingDate" class="control-label">Viewing Time</label>
+    <input asp-for="ViewingDate" class="form-control" type="time" min="09:00" max="16:30"  />
+    <span asp-validation-for="ViewingDate" class="text-danger"></span>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const timeInput = document.getElementById("viewingTime");
+
+        // Disable times outside the allowed range (9 AM to 4:30 PM)
+        timeInput.addEventListener("input", function () {
+            const selectedTime = this.value;
+
+            // Extract hours and minutes
+            const [hours, minutes] = selectedTime.split(":").map(Number);
+
+            // Disable if time is outside of 09:00 to 16:30
+            if (hours < 9 || (hours >= 16 && minutes > 30)) {
+                alert("Viewing time must be between 9:00 AM and 4:30 PM.");
+                this.value = ""; // Clear the invalid value
+            }
+        });
+
+        // Disable past times if current day is today
+        const today = new Date();
+        const reservationDate = document.getElementById("ReservationDate").valueAsDate;
+        if (reservationDate && reservationDate.toDateString() === today.toDateString()) {
+            const currentHour = today.getHours();
+            const currentMinutes = today.getMinutes();
+
+            // Disable if the current time is past 4:30 PM
+            if (currentHour > 16 || (currentHour === 16 && currentMinutes > 30)) {
+                alert("Viewing time must be between 9:00 AM and 4:30 PM.");
+                timeInput.disabled = true; // Disable time input for today if it's too late
+            }
+        }
+    });
+</script>
+
+
+
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

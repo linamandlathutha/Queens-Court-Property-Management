@@ -1,0 +1,79 @@
+﻿@model MvcCoreUploadAndDisplayImage_Demo.Models.Test
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - Test Details</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .details-container {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: #f8f9fa;
+        }
+
+        .details-title {
+            margin-bottom: 20px;
+            font-size: 1.75rem;
+            color: #343a40;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 10px;
+        }
+
+        .row dt {
+            font-weight: bold;
+            color: #495057;
+        }
+
+        .action-buttons {
+            margin-top: 20px;
+        }
+
+        .btn-custom {
+            font-size: 0.9rem;
+            padding: 6px 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="details-title">Details</h1>
+
+        <div class="details-container">
+            <h4 class="text-primary mb-3">Credentials</h4>
+            <hr />
+            <dl class="row">
+               
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Password)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Password)
+                </dd>
+            </dl>
+        </div>
+
+        <div class="action-buttons">
+            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning btn-custom">Edit</a>
+            <a asp-action="Index" class="btn btn-secondary btn-custom">Back to List</a>
+        </div>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

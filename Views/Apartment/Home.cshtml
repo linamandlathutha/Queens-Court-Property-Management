@@ -1,0 +1,632 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apartment Renting</title>
+    <link rel="stylesheet" href="styles.css">
+
+
+      <meta name="description" content="" />
+    <meta name="keywords" content="bootstrap, bootstrap5" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+
+    <link rel="stylesheet" href="~/fonts/icomoon/style.css" />
+    <link rel="stylesheet" href="~/fonts/flaticon/font/flaticon.css" />
+
+    <link rel="stylesheet" href="~/css/tiny-slider.css" />
+    <link rel="stylesheet" href="~/css/aos.css" />
+    <link rel="stylesheet" href="~/css/style.css" />
+
+</head>
+
+<body>
+   
+
+    <span class="icofont-close js-menu-toggle"></span>
+    <nav class="site-nav">
+        <div class="container">
+            <div class="menu-bg-wrap">
+                <div class="site-navigation">
+                    <a asp-controller="Apartment" asp-action="Home" class="logo m-0 float-start">Queens Court Properties.</a>
+
+                    <!-- Collapsible Navigation -->
+                    <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <ul class="js-clone-nav d-none d-lg-inline-block text-start site-menu float-end" id="navbarNav">
+                        <li class="active"><a asp-area="" asp-controller="Apartment" asp-action="Home">Home</a></li>
+
+                        @if (User.Identity.IsAuthenticated && !(User.IsInRole("Admin")) && !(User.IsInRole("Manager")))
+                        {
+                            <li class="has-children">
+                                <a>Properties</a>
+                                <ul class="dropdown">
+                                    <li><a asp-area="" asp-controller="Apartment" asp-action="ViewCIndex">View Apartments</a></li>
+                                    <li><a asp-area="" asp-controller="Profiles" asp-action="Index">Create Profile</a></li>
+                                    <li><a asp-controller="Home" asp-action="History">My Apartments</a></li>
+                                    <li><a asp-area="" asp-controller="Apartment" asp-action="CIndex">Deposit Apartment</a></li>
+                                    <li><a asp-area="" asp-controller="Reservations" asp-action="Index">My Reservations</a></li>
+                                    <li><a asp-area="" asp-controller="Manager" asp-action="Register"> Register As LandLord</a></li>
+                                    <li><a asp-area="" asp-controller="Manager" asp-action="Index">LandLord Registrations</a></li>
+                                    <li><a asp-area="" asp-controller="Apartment" asp-action="CIndex">Deposit Apartment</a></li>
+                                    <li><a asp-area="" asp-controller="ReportApartment" asp-action="Create">Reports Apartment</a></li>
+                                    <li><a asp-area="" asp-controller="Reservations" asp-action="Index">View Reservations</a></li>
+                                    <li><a asp-area="" asp-controller="ReportApartment" asp-action="Index">Apartment Reports</a></li>
+                                </ul>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="has-children">
+                                <a>Management</a>
+                                <ul class="dropdown" style="color:black">
+                                    <li><a asp-area="Text" asp-controller="Apartment" asp-action="Index" style="color:black">Apartments</a></li>
+                                    <li><a asp-area="Text" asp-controller="Home" asp-action="History" style="color:black">History</a></li>
+                                    <li><a class="Text" asp-area="" asp-controller="Manager" asp-action="Index" style="color:black">Registrations</a></li>
+                                    <li><a class="Text" asp-area="" asp-controller="Reservations" asp-action="Index" style="color:black"> Reservations</a></li>
+                                    <li><a class="Text" asp-area="" asp-controller="Home" asp-action="History" style="color:black"> Payments</a></li>
+                                    <li><a class="Text" asp-area="" asp-controller="HomeFile" asp-action="ViewFiles" style="color:black"> View Lease-Agreements</a></li>
+                                    <li><a class="Text" asp-area="" asp-controller="ReportApartment" asp-action="Index" style="color:black">Apartment Reports</a></li>
+                                    <li><a class="Text" asp-area="" asp-controller="Tests" asp-action="Create" style="color:black">Add Credits</a></li>
+                                    <li><a class="Text" asp-area="" asp-controller="Tests" asp-action="Index" style="color:black">View Credits</a></li>
+                                </ul>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("Manager"))
+                        {
+                            <li class="has-children">
+                                <a asp-controller="Apartment" asp-action="Index">My Stuff</a>
+                                <ul class="dropdown">
+                                    <li><a asp-area="" asp-controller="Apartment" asp-action="Create">Add Apartments</a></li>
+                                    <li><a asp-area="" asp-controller="Apartment" asp-action="Index">List Apartments</a></li>
+                                    <li><a asp-area="" asp-controller="Reservations" asp-action="Index">View Reservations</a></li>
+                                    <li><a asp-area="" asp-controller="Home" asp-action="History">Payments</a></li>
+                                    <li><a asp-area="" asp-controller="HomeFile" asp-action="ViewFiles">Lease-Agreements</a></li>
+                                    <li><a asp-area="" asp-controller="Tests" asp-action="Index">Logins</a></li>
+                                </ul>
+                            </li>
+                        }
+
+                        <!-- Display the Login and Register buttons -->
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+                            </li>
+                            <li class="nav-item">
+                                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+
+
+
+
+   <header class="main-header">
+
+        <div class="hero">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1>Find Your Dream Apartment</h1>
+                <p>Discover luxurious apartments that suit your lifestyle.</p>
+             
+                @if (User.Identity.IsAuthenticated)
+                {
+        <a asp-controller="Apartment" asp-action="ViewCIndex" class="cta-btn">View Apartments</a>
+                }
+                else
+                {
+            <a asp-area="Identity" asp-page="/Account/Login" class="cta-btn">Login to View Apartments</a>
+                }
+
+            </div>
+        </div>
+
+
+
+    </header>
+  
+    <style></style>
+
+
+
+    <section class="features">
+        <div class="feature-card">
+            <a asp-area="Identity" asp-page="/Account/Login">
+                <img src="~/img/arartment3.jpeg" alt="Modern Design">
+            </a>
+            <h2>Modern Design</h2>
+            <p>Spacious and modern apartments with all the amenities you need.</p>
+        </div>
+
+        <div class="feature-card">
+              <a asp-area="Identity" asp-page="/Account/Login">
+            <img src="~/img/arpartment2.jpeg" alt="Prime Locations">
+            </a>
+            <h2>Prime Locations</h2>
+            <p>Live in the heart of the city or close to nature, we have options for everyone.</p>
+        </div>
+        <div class="feature-card">
+              <a asp-area="Identity" asp-page="/Account/Login">
+            <img src="~/img/hotel 3.jpg" alt="Affordable Prices">
+            </a>
+            <h2>Affordable Prices</h2>
+            <p>Luxury apartments at prices you'll love.</p>
+        </div>
+    </section>
+
+    <section class="apartment-gallery">
+        <h2>Available Apartments</h2>
+        <div class="gallery-grid">
+            <div class="apartment">
+                  <a asp-area="Identity" asp-page="/Account/Login">
+                <img src="~/img/2 room apartment.jpeg" alt="City Center Apartment">
+                </a>
+                <div class="info">
+                    <h3>City Center Apartment</h3>
+                    <p>2 Bed, 2 Bath, R1,200/month</p>
+                </div>
+            </div>
+            <div class="apartment">
+                  <a asp-area="Identity" asp-page="/Account/Login">
+                <img src="~/img/apartment.jpeg" alt="Suburban Villa">
+                </a>
+                <div class="info">
+                    <h3>Suburban Villa</h3>
+                    <p>3 Bed, 3 Bath, R1,800/month</p>
+                </div>
+            </div>
+            <div class="apartment">
+                  <a asp-area="Identity" asp-page="/Account/Login">
+                <img src="~/img/apartment1.jpeg" alt="Parkside Residence">
+                </a>
+                <div class="info">
+                    <h3>Parkside Residence</h3>
+                    <p>1 Bed, 1 Bath, R900/month</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <h2>What Our Clients Say</h2>
+        <div class="testimonial-slider">
+            <div class="testimonial">
+                <img src="~/img/arartment3.jpeg" alt="Client 1">
+                <p>"ApartmentRent made finding my new home so easy and stress-free!"</p>
+                <h4>Sarah L.</h4>
+            </div>
+            <div class="testimonial">
+                <img src="~/img/arpartment2.jpeg" alt="Client 2">
+                <p>"Great selection of apartments and excellent customer service."</p>
+                <h4>Michael B.</h4>
+            </div>
+            <div class="testimonial">
+                <img src="~/img/hotel 3.jpg" alt="Client 3">
+                <p>"I found the perfect apartment thanks to ApartmentRent's intuitive platform."</p>
+                <h4>Emily R.</h4>
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-logo">ApartmentRent</div>
+            <ul class="footer-menu">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Apartments</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+            <div class="social-media">
+                <a href="#"><img src="~/img/2 room apartment.jpeg" alt="Facebook"></a>
+                <a href="#"><img src="~/img/apartment.jpeg" alt="Twitter"></a>
+                <a href="#"><img src="~/img/apartment1.jpeg" alt="Instagram"></a>
+            </div>
+        </div>
+        <p>&copy; 2024 ApartmentRent. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+        line-height: 1.6;
+        color: #333;
+    }
+
+    .hero {
+        position: relative;
+        height: 100vh; /* Adjust height as needed */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+        background: url('images/hero_bg_2.jpg') no-repeat center center/cover; /* Add the image here */
+
+
+    }
+
+
+
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5); /* Adjust opacity for a darker overlay effect */
+    }
+
+    .hero-content {
+        z-index: 2; /* Keeps the content on top of the image */
+        position: relative;
+    }
+
+
+    .cta-btn {
+        background-color: #ff7f50;
+        color: white;
+        padding: 15px 30px;
+        text-decoration: none;
+        font-size: 1.2rem;
+        border-radius: 30px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        animation: fadeInUp 1s ease-out 1s;
+    }
+
+        .cta-btn:hover {
+            background-color: #ff4500;
+            transform: translateY(-5px);
+        }
+
+    /* Features Section */
+    .features {
+        display: flex;
+        justify-content: space-around;
+        padding: 50px 20px;
+        background-color: #f4f4f4;
+        text-align: center;
+        flex-wrap: wrap;
+    }
+
+    .feature-card {
+        flex: 1;
+        min-width: 250px;
+        margin: 20px;
+        padding: 20px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h2 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .feature-card p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+    /* Apartment Gallery */
+    .apartment-gallery {
+        padding: 50px 20px;
+        background: white;
+    }
+
+        .apartment-gallery h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            color: #333;
+        }
+
+    .gallery-grid {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .apartment {
+        width: 30%;
+        min-width: 280px;
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .apartment:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .apartment img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+    .info {
+        padding: 20px;
+        text-align: center;
+    }
+
+        .info h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .info p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+    /* Testimonials Section */
+    .testimonials {
+        padding: 50px 20px;
+        background-color: #f4f4f4;
+        text-align: center;
+    }
+
+        .testimonials h2 {
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            color: #333;
+        }
+
+    .testimonial-slider {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .testimonial {
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        width: 300px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .testimonial:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .testimonial img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+
+        .testimonial p {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .testimonial h4 {
+            color: #333;
+            font-weight: bold;
+        }
+
+    /* Footer */
+    .main-footer {
+        background-color: #333;
+        color: white;
+        padding: 30px 20px;
+    }
+
+    .footer-content {
+        max-width: 1200px;
+        margin: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .footer-logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .footer-menu {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+        .footer-menu li {
+            margin: 0 15px;
+        }
+
+        .footer-menu a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+            .footer-menu a:hover {
+                color: #ff7f50;
+            }
+
+    .social-media {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+        .social-media a img {
+            width: 30px;
+            height: 30px;
+            transition: transform 0.3s;
+        }
+
+        .social-media a:hover img {
+            transform: scale(1.1);
+        }
+
+    .main-footer p {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 0.9rem;
+        color: #ccc;
+    }
+
+    /* Animations */
+    fadeInDown {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    fadeInUp {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    /* Responsive Design */
+    (max-width: 992px) {
+        .features
+
+    {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .gallery-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .apartment {
+        width: 80%;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .social-media {
+        justify-content: center;
+    }
+
+    }
+
+    (max-width: 600px) {
+        .hero h1
+
+    {
+        font-size: 2rem;
+    }
+
+    .hero p {
+        font-size: 1.2rem;
+    }
+
+    .cta-btn {
+        font-size: 1rem;
+        padding: 10px 20px;
+    }
+
+    .feature-card img, .apartment img, .testimonial img {
+        height: 150px;
+    }
+
+    }
+</style>
+<script src="~/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/tiny-slider.js"></script>
+<script src="~/js/aos.js"></script>
+<script src="~/js/navbar.js"></script>
+<script src="~/js/counter.js"></script>
+<script src="~/js/custom.js"></script>

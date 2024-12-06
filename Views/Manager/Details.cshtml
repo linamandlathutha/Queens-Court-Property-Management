@@ -1,0 +1,91 @@
+﻿@model MvcCoreUploadAndDisplayImage_Demo.Models.Manager
+
+<h2>Manager Details</h2>
+
+<div>
+    <h4>@Model.FullName</h4>
+    <dl class="row">
+        <dt class="col-sm-3">
+            Email
+        </dt>
+        <dd class="col-sm-9">
+            @Model.Email
+        </dd>
+        <dt class="col-sm-3">
+            PhoneNumber
+        </dt>
+        <dd class="col-sm-9">
+            @Model.PhoneNumber
+        </dd>
+        <dt class="col-sm-3">
+            Address
+        </dt>
+        <dd class="col-sm-9">
+            @Model.Address
+        </dd>
+        <dt class="col-sm-3">
+            Identity Document
+        </dt>
+        <dd class="col-sm-9">
+            @if (!string.IsNullOrEmpty(Model.IdentityDocument))
+            {
+                <img src="@Url.Content($"~/identityDocs/{Model.IdentityDocument}")" alt="Identity Document" class="image-hover" style="width: 200px;" />
+            }
+        </dd>
+        <dt class="col-sm-3">
+            Ownership Document
+        </dt>
+        <dd class="col-sm-9">
+            @if (!string.IsNullOrEmpty(Model.OwnershipDocument))
+            {
+                <img src="@Url.Content($"~/ownershipDocs/{Model.OwnershipDocument}")" alt="Ownership Document" class="image-hover" style="width: 200px;" />
+            }
+        </dd>
+        <dt class="col-sm-3">
+            Profile Picture
+        </dt>
+        <dd class="col-sm-9">
+            @if (!string.IsNullOrEmpty(Model.ProfilePicture))
+            {
+                <img src="@Url.Content($"~/profilePics/{Model.ProfilePicture}")" alt="Profile Picture" class="image-hover" style="width: 200px;" />
+            }
+        </dd>
+    </dl>
+</div>
+<div> 
+    @if (User.IsInRole("Admin"))
+    {
+        @if (Model.Status != ManagerStatus.Approved)
+        {
+                                            <!-- Show Accept and Reject buttons if status is not Approved -->
+                                            <form asp-controller="Manager" asp-action="Accept" method="post" style="display:inline;">
+                                                <input type="hidden" name="id" value="Id" />
+                                                <button type="submit" class="btn btn-success">Accept</button>
+                                            </form>
+
+                                            <form asp-controller="Manager" asp-action="Reject" method="post" style="display:inline;">
+                                                <input type="hidden" name="id" value="Id" />
+                                                <button type="submit" class="btn btn-danger">Reject</button>
+                                            </form>
+        }
+        else
+        {
+                                            <!-- Only show the status of Approved if already accepted -->
+                                            <span class="badge bg-success">Approved</span>
+        }
+    }
+@*     <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a> *@
+</div>
+<style>
+    /* CSS for image hover effect */
+    .image-hover {
+        transition: transform 0.3s ease; /* Smooth transition for zoom effect */
+    }
+
+        .image-hover:hover {
+            transform: scale(2.9); /* Increase image size by 20% */
+        }
+
+</style>

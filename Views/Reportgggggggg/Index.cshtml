@@ -1,0 +1,53 @@
+﻿@model IEnumerable<MvcCoreUploadAndDisplayImage_Demo.Models.ReportApartment>
+
+@{
+    ViewData["Title"] = "Apartment Reports";
+}
+
+<h1>Apartment Reports</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Report</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ApartmentName)
+            </th>
+           
+            <th>
+                @Html.DisplayNameFor(model => model.ReportDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReportDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsResolved)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.ApartmentName)</td>
+               
+                <td>@Html.DisplayFor(modelItem => item.ReportDescription)</td>
+                <td>@Html.DisplayFor(modelItem => item.ReportDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                <td>@Html.DisplayFor(modelItem => item.IsResolved)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,195 @@
+﻿@using System.Globalization
+@model IEnumerable<MvcCoreUploadAndDisplayImage_Demo.Models.History>
+
+
+
+
+<!-- JavaScript -->
+<!-- Add Bootstrap CSS and JS, and include jQuery (if not already included) -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    function showReasonModal() {
+        // Show the Bootstrap modal
+        $('#reasonModal').modal('show');
+    }
+
+    function submitReason() {
+        // Get the selected reason
+        var selectedReason = document.querySelector('input[name="leaveReason"]:checked');
+        
+        if (selectedReason) {
+            // For now, just print the reason (you can save this if needed)
+            alert("You selected: " + selectedReason.value);
+            
+            // Optionally pass the reason to the server (e.g., add a hidden input in the form)
+            // document.getElementById('markAsFreeForm').appendChild(
+            //     Object.assign(document.createElement('input'), {
+            //         type: 'hidden',
+            //         name: 'leaveReason',
+            //         value: selectedReason.value
+            //     })
+            // );
+
+            // Submit the form after selecting a reason
+            document.getElementById('markAsFreeForm').submit();
+        } else {
+            alert("Please select a reason for leaving before proceeding.");
+        }
+    }
+</script>
+<h2 class="text-center mb-4">Payment History</h2>
+
+<div class="row">
+    @foreach (var record in Model)
+    {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Apartment: @record.ApartmentName</h5>
+                        <p class="card-text"><strong>ID:</strong> @record.Id</p>
+                        <p class="card-text"><strong>Email:</strong> @record.Email</p>
+                        <p class="card-text"><strong>Description:</strong> @record.Location</p>
+                        <p class="card-text"><strong>Type:</strong> @record.Type</p>
+
+                    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                    {
+                                <p class="card-text"><strong>Status:</strong> @record.Status</p>
+                    }
+
+                    <p class="card-text"><strong>Monthly Rent:</strong>  <span id="monthlyRent">@record.MonthlyRent.ToString("C", new System.Globalization.CultureInfo("en-ZA"))</span></p>
+                    <p class="card-text"><strong>Next Payment Date:</strong> @record.DueDate</p>
+
+                    <!-- Hidden field to store the raw MonthlyRent value -->
+                    <input type="hidden" id="hiddenMonthlyRent" value="@record.MonthlyRent" />
+                    <input type="hidden" id="hiddenApartmentName" value="@record.ApartmentName" />
+                    <input type="hidden" id="hiddenLocation" value="@record.Location" />
+
+
+                    <p class="card-text">
+                        <strong>Payment Status:</strong>
+                        <span id="paymentStatus" style="color: @(record.PaymentStatus == PaymentStatus.Paid ? "green" : "red")">
+                            @record.PaymentStatus.ToString()
+                        </span>
+                    </p>
+
+                    @if (record.PaymentStatus == PaymentStatus.Overdue)
+                    {
+                        <!-- Pay Now Button -->
+                        <button id="payNowButton" class="btn btn-primary" data-amount="@record.MonthlyRent * 100">Pay Now</button>
+
+
+                    }
+
+
+                         <!-- Show the "Mark as Free" button only if the apartment is not already free -->
+            @if (record.Status != ApartmentStatus.Free)
+            {
+                      <!-- Button to open the modal -->
+<form id="markAsFreeForm" asp-controller="Home" asp-action="MarkAsFree" method="post">
+    <input type="hidden" name="apartmentName" value="@record.ApartmentName" />
+
+</form>
+
+                        <!-- Vacate Button -->
+                        <button type="button" class="btn btn-danger" onclick="showReasonModal()">Vacate Apartment</button>
+
+
+
+                        <!-- Modal for Vacating Reason -->
+                        <div class="modal fade" id="reasonModal" tabindex="-1" aria-labelledby="reasonModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="reasonModalLabel">Why are you leaving the apartment?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="markAsFreeForm" method="post" action="/Apartment/MarkAsFree">
+                                            <input type="hidden" name="apartmentName" value="ApartmentName" />
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="leaveReason" id="reason1" value="Moving to another city">
+                                                <label class="form-check-label" for="reason1">Moving to another city</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="leaveReason" id="reason2" value="Found a better place">
+                                                <label class="form-check-label" for="reason2">Found a better place</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="leaveReason" id="reason3" value="Lease expired">
+                                                <label class="form-check-label" for="reason3">Lease expired</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="leaveReason" id="reason4" value="Personal reasons">
+                                                <label class="form-check-label" for="reason4">Personal reasons</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="leaveReason" id="reason5" value="Other">
+                                                <label class="form-check-label" for="reason5">Other</label>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" onclick="submitReason()">Submit Reason & Vacate Apartment</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script type="text/javascript">
+                            function showReasonModal() {
+                                $('#reasonModal').modal('show');
+                            }
+
+                            function submitReason() {
+                                var selectedReason = document.querySelector('input[name="leaveReason"]:checked');
+                                if (selectedReason) {
+                                    document.getElementById('markAsFreeForm').submit();
+                                } else {
+                                    alert("Please select a reason for leaving before proceeding.");
+                                }
+                            }
+                        </script>
+                        <script src="https://js.stripe.com/v3/"></script>
+                        <script>
+                            document.getElementById('payNowButton').addEventListener('click', function () {
+                                // Get the Monthly Rent value from the hidden input field
+                                var amount = document.getElementById('hiddenMonthlyRent').value;
+                                var normalizedAmount = amount.replace(',', '.'); // Normalize the amount if needed
+
+                                // Get Apartment Name and Location
+                                var productName = document.getElementById('hiddenApartmentName').value;
+                                var description = document.getElementById('hiddenLocation').value;
+
+                                // Call the function to create a checkout session
+                                createCheckoutSession(normalizedAmount, productName, description);
+                            });
+
+                            // Function to handle the checkout session creation
+                            function createCheckoutSession(amount, productName, description) {
+                                // Redirect to your payment processing endpoint with all required parameters
+                                window.location.href = `/Home/CreateCheckoutSession?amount=${amount}&productName=${encodeURIComponent(productName)}&description=${encodeURIComponent(description)}`;
+                            }
+
+
+                           
+
+                        </script>
+
+
+            }
+                    </div>
+                </div>
+            </div>
+    }
+</div>
+
+
+<p class="text-center">
+    <a asp-action="Index" class="btn btn-primary">Back to Home</a>
+</p>

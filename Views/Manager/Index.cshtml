@@ -1,0 +1,152 @@
+﻿@model IEnumerable<MvcCoreUploadAndDisplayImage_Demo.Models.Manager>
+
+@{
+    ViewData["Title"] = "Managers List";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .card-container {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .manager-card {
+            width: 100%;
+            max-width: 350px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+            .manager-card img {
+                width: 100%;
+                height: 250px;
+                object-fit: cover;
+            }
+
+        .manager-card-body {
+            padding: 15px;
+        }
+
+            .manager-card-body h5 {
+                font-size: 1.25rem;
+                color: #343a40;
+            }
+
+            .manager-card-body p {
+                margin-bottom: 10px;
+            }
+
+            .manager-card-body .action-buttons {
+                margin-top: 10px;
+                display: flex;
+                gap: 10px;
+            }
+
+        .no-picture {
+            width: 100%;
+            height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f8f9fa;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        h2 {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            color: #343a40;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+       
+
+
+
+    
+        @if (Model.Any(m => m.Status == ManagerStatus.Approved) || User.IsInRole("Admin"))
+        {
+            <p>
+                <a asp-area="" asp-controller="Tests" asp-action="Index" class="btn btn-danger">Check For LogIn Details</a>
+            </p>
+        }
+
+            
+
+
+        <div class="card-container">
+            @foreach (var manager in Model)
+            {
+                  <div class="manager-card">
+                    @if (!string.IsNullOrEmpty(manager.ProfilePicture))
+                    {
+                <a asp-controller="Manager" asp-action="Details" asp-route-id="@manager.Id">
+                    <img src="@Url.Content($"~/profilePics/{manager.ProfilePicture}")" alt="Profile Picture" />
+                </a>
+                    }
+                    else
+                    {
+                <div class="no-picture">No Picture</div>
+                    }
+
+                    <div class="manager-card-body">
+                        <h5>@manager.FullName</h5>
+                        <p>Email: @manager.Email</p>
+                        <p>Phone: @manager.PhoneNumber</p>
+                        <p>
+                            Address: <a href="https://www.google.com/maps/search/?api=1&query=@Uri.EscapeDataString(manager.Address)" target="_blank">
+                                @manager.Address
+                            </a>
+                        </p>
+                        <p>Status: @manager.Status</p>
+
+                        <div class="action-buttons">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                @if (manager.Status != ManagerStatus.Approved)
+                                {
+                                    <!-- Show Accept and Reject buttons if status is not Approved -->
+                                    <form asp-controller="Manager" asp-action="Accept" method="post" style="display:inline;">
+                                        <input type="hidden" name="id" value="@manager.Id" />
+                                        <button type="submit" class="btn btn-success">Accept</button>
+                                    </form>
+
+                                    <form asp-controller="Manager" asp-action="Reject" method="post" style="display:inline;">
+                                        <input type="hidden" name="id" value="@manager.Id" />
+                                        <button type="submit" class="btn btn-danger">Reject</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <!-- Only show the status of Approved if already accepted -->
+                                    <span class="badge bg-success">Approved</span>
+                                }
+                            }
+
+                            @if (User.IsInRole("Manager") || User.IsInRole("User"))
+                            {
+                                <a asp-controller="Manager" asp-action="Details" asp-route-id="@manager.Id" class="btn btn-info">Details</a>
+                                <a asp-controller="Manager" asp-action="Edit" asp-route-id="@manager.Id" class="btn btn-warning">Edit</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

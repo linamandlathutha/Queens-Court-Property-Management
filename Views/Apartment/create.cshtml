@@ -1,0 +1,128 @@
+﻿@model MvcCoreUploadAndDisplayImage_Demo.Models.ApartmentViewModel
+
+<h2>Create New Apartment</h2>
+<script src="https://maps.googleapis.com/maps/api/js?key=@ViewBag.GoogleApiKey&libraries=places"></script>
+<form asp-action="Create" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="ApartmentName"></label>
+        <input asp-for="ApartmentName" class="form-control" />
+        <span asp-validation-for="ApartmentName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Location"></label>
+        <input asp-for="Location" class="form-control" id="address" />
+        <span asp-validation-for="Location" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Type"></label>
+        <select asp-for="Type" class="form-control">
+            <option value="OneRoom">One Room</option>
+            <option value="TwoRoom">Two Room</option>
+            <option value="ThreeRoom">Three Room</option>
+        </select>
+        <span asp-validation-for="Type" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status"></label>
+        <select asp-for="Status" class="form-control" readonly>
+            <option value="Free">Free</option>
+            <option value="Taken">Taken</option>
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MonthlyRent"></label>
+        <input asp-for="MonthlyRent" class="form-control" />
+        <span asp-validation-for="MonthlyRent" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Bedrooms"></label>
+        <input asp-for="Bedrooms" type="number" class="form-control" />
+        <span asp-validation-for="Bedrooms" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Bathrooms"></label>
+        <input asp-for="Bathrooms" type="number" class="form-control" />
+        <span asp-validation-for="Bathrooms" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Size"></label>
+        <input asp-for="Size" class="form-control" />
+        <span asp-validation-for="Size" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ContactPhone"></label>
+        <input asp-for="ContactPhone" class="form-control" />
+        <span asp-validation-for="ContactPhone" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AvailableFrom"></label>
+        <input asp-for="AvailableFrom" type="date" class="form-control" />
+        <span asp-validation-for="AvailableFrom" class="text-danger"></span>
+    </div>
+
+    <div class="form-group form-check">
+        <input asp-for="IsFurnished" class="form-check-input" type="checkbox" />
+        <label asp-for="IsFurnished" class="form-check-label"></label>
+        <span asp-validation-for="IsFurnished" class="text-danger"></span>
+    </div>
+
+    <div class="form-group form-check">
+        <input asp-for="HasParking" class="form-check-input" type="checkbox" />
+        <label asp-for="HasParking" class="form-check-label"></label>
+        <span asp-validation-for="HasParking" class="text-danger"></span>
+    </div>
+
+    <div class="form-group form-check">
+        <input asp-for="PetsAllowed" class="form-check-input" type="checkbox" />
+        <label asp-for="PetsAllowed" class="form-check-label"></label>
+        <span asp-validation-for="PetsAllowed" class="text-danger"></span>
+    </div>
+
+    <div class="form-group form-check">
+        <input asp-for="HasBalcony" class="form-check-input" type="checkbox" />
+        <label asp-for="HasBalcony" class="form-check-label"></label>
+        <span asp-validation-for="HasBalcony" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Image"></label>
+        <input asp-for="Image" class="form-control-file" type="file" />
+        <span asp-validation-for="Image" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<script>
+    // Initialize Google Places Autocomplete for address input
+    function initAutocomplete() {
+        var input = document.getElementById('address');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+
+        // Optional: Restrict results to South Africa
+        autocomplete.setComponentRestrictions({ 'country': ['za'] });
+
+        autocomplete.addListener('place_changed', function () {
+            var place = autocomplete.getPlace();
+            // You can add any additional logic here if needed
+        });
+    }
+
+    google.maps.event.addDomListener(window, 'load', initAutocomplete);
+
+</script>

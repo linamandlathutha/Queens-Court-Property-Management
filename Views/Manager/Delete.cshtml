@@ -1,0 +1,63 @@
+﻿@model MvcCoreUploadAndDisplayImage_Demo.Models.Manager
+
+<h2>Delete Manager</h2>
+
+<h3>Are you sure you want to delete this manager?</h3>
+<div class="card mb-4" style="border-radius: 10px;">
+    <div class="card-body">
+        <h4 class="mb-3">@Model.FullName</h4>
+        <dl class="row">
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">@Model.Email</dd>
+
+            <dt class="col-sm-3">Phone Number</dt>
+            <dd class="col-sm-9">@Model.PhoneNumber</dd>
+
+            <dt class="col-sm-3">Address</dt>
+            <dd class="col-sm-9">@Model.Address</dd>
+
+            <dt class="col-sm-3">Identity Document</dt>
+            <dd class="col-sm-9">
+                @if (!string.IsNullOrEmpty(Model.IdentityDocument))
+                {
+                    <img src="@Url.Content($"~/identityDocs/{Model.IdentityDocument}")" alt="Identity Document" class="img-thumbnail" style="width: 200px; height: auto;" />
+                }
+                else
+                {
+                    <span class="text-muted">No document uploaded</span>
+                }
+            </dd>
+
+            <dt class="col-sm-3">Ownership Document</dt>
+            <dd class="col-sm-9">
+                @if (!string.IsNullOrEmpty(Model.OwnershipDocument))
+                {
+                    <img src="@Url.Content($"~/ownershipDocs/{Model.OwnershipDocument}")" alt="Ownership Document" class="img-thumbnail" style="width: 200px; height: auto;" />
+                }
+                else
+                {
+                    <span class="text-muted">No document uploaded</span>
+                }
+            </dd>
+
+            <dt class="col-sm-3">Profile Picture</dt>
+            <dd class="col-sm-9">
+                @if (!string.IsNullOrEmpty(Model.ProfilePicture))
+                {
+                    <img src="@Url.Content($"~/profilePics/{Model.ProfilePicture}")" alt="Profile Picture" class="img-thumbnail" style="width: 200px; height: auto;" />
+                }
+                else
+                {
+                    <span class="text-muted">No profile picture uploaded</span>
+                }
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<form asp-action="DeleteConfirmed" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

@@ -1,0 +1,65 @@
+﻿@model MvcCoreUploadAndDisplayImage_Demo.Models.Apartment
+
+@{
+    ViewData["Title"] = "Edit Apartment";
+}
+
+<h1>Edit Apartment</h1>
+
+<form asp-action="Edit">
+    <div class="form-group">
+        <label asp-for="ApartmentName"></label>
+        <input asp-for="ApartmentName" class="form-control" />
+        <span asp-validation-for="ApartmentName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Location"></label>
+        <input asp-for="Location" class="form-control" />
+        <span asp-validation-for="Location" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Type"></label>
+        <select asp-for="Type" class="form-control">
+            <option value="OneRoom">One Room</option>
+            <option value="TwoRoom">Two Room</option>
+            <option value="ThreeRoom">Three Room</option>
+        </select>
+        <span asp-validation-for="Type" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Status"></label>
+        <select asp-for="Status" class="form-control">
+            <option value="Free">Free</option>
+            <option value="Taken">Taken</option>
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="MonthlyRent"></label>
+        <input asp-for="MonthlyRent" class="form-control" />
+        <span asp-validation-for="MonthlyRent" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Image"></label>
+        <input asp-for="Image" class="form-control-file" />
+        <span asp-validation-for="Image" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

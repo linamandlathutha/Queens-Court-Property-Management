@@ -1,0 +1,81 @@
+﻿<!-- Assuming you have a model that includes the price or amount for each apartment -->
+@model IEnumerable<MvcCoreUploadAndDisplayImage_Demo.Models.Apartment>
+
+<h4 class="text-center text-uppercase mb-4">Apartment List</h4>
+<p class="text-center">
+   
+</p>
+@using (Html.BeginForm("CIndex", "Apartment", FormMethod.Get))
+{
+    <div class="d-flex justify-content-end mb-3">
+        <div class="form-group me-2">
+            <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control rounded-pill" placeholder="Search by apartment name" style="width: 250px;" />
+        </div>
+        <button type="submit" class="btn btn-primary rounded-pill">Search</button>
+    </div>
+}
+<style>/* Optional Custom CSS for Search Bar */
+.form-control.rounded-pill {
+    border: 1px solid #005655; /* Change border color */
+    box-shadow: none; /* Remove shadow if any */
+}
+
+.btn-primary.rounded-pill {
+    padding: 0.5rem 1rem; /* Adjust padding */
+}
+</style>
+<div class="container">
+    <div class="row">
+        @foreach (var apartment in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="~/images/@apartment.Image"
+                         class="card-img-top"
+                         alt="@apartment.ApartmentName"
+                         style="height: 200px; object-fit: cover;" />
+                    <div class="card-body">
+                        <h5 class="card-title">@apartment.ApartmentName</h5>
+                        <p class="card-text">
+                            <strong>Location:</strong>
+                            <a href="https://www.google.com/maps/search/?api=1&query=@Uri.EscapeDataString(apartment.Location)" target="_blank">
+                                @apartment.Location
+                            </a>
+                            <br />
+
+                            <strong>Type:</strong> @apartment.Type <br />
+                            <strong>Status:</strong> @apartment.Status <br />
+                            <strong>Monthly Rent:</strong> @apartment.MonthlyRent.ToString("C", new System.Globalization.CultureInfo("en-ZA"))
+
+                            <h5 class="card-title">@apartment.Email</h5>
+
+                        </p>
+                        <a asp-action="Details" asp-route-id="@apartment.Id" class="btn btn-info">Click to View</a>
+
+                        <!-- Add a form for Rent Now -->
+                        <form method="post" action="/Home/CreateCheckoutSession">
+                            <input type="hidden" name="amount" value="@apartment.MonthlyRent" />
+                            <input type="hidden" name="productName" value="@apartment.ApartmentName" />
+                            <input type="hidden" name="description" value="Rent for @apartment.ApartmentName" />
+                            
+
+
+
+                        </form>
+                         @if (apartment.Status != ApartmentStatus.Taken)
+        {
+           <form method="post" asp-action="CreateCheckoutSession" asp-controller="Home">
+    <input type="hidden" name="amount" value="@apartment.MonthlyRent.ToString("F2")" /> <!-- Using MonthlyRent as deposit amount -->
+    <input type="hidden" name="productName" value="@apartment.ApartmentName" /> <!-- Replace with actual product name -->
+    <input type="hidden" name="description" value="Deposit for renting apartment #@apartment.Id" /> <!-- Replace with actual description -->
+    <button type="submit" class="btn btn-info">Pay Deposit</button>
+</form>
+
+        }
+    </div>
+                    </div>
+                </div>
+            
+        }
+    </div>
+</div>
