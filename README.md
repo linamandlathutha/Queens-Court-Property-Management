@@ -1,1 +1,12 @@
-# MvcCoreUploadAndDisplayImage_Demo
+# Queens Court Property Manangement
+![Screenshot 2024-10-17 195011](https://github.com/user-attachments/assets/2627de28-0fd6-4d65-8068-f9cc41c7eb58)
+![Screenshot 2024-12-06 184251](https://github.com/user-attachments/assets/7afdf4b1-4d8a-4430-8b95-ef352e613c0b)
+![Screenshot 2024-12-06 184145](https://github.com/user-attachments/assets/c02a4251-8b3c-4f8f-9df8-8549dd2e6865)
+![Screenshot 2024-10-17 195940](https://github.com/user-attachments/assets/7ae04bad-7d14-480e-b334-3b7421efc676)
+![Screenshot 2024-10-17 202456](https://github.com/user-attachments/assets/16d2c4d2-b890-4054-9562-b3ee8cd8b92d)
+![Screenshot 2024-10-17 195330](https://github.com/user-attachments/assets/906ddb0c-bfcd-44db-91d5-d89d8b7d794a)
+![Screenshot 2024-10-17 195248](https://github.com/user-attachments/assets/aadcab3e-495d-4ec4-b532-df5ceea95ad2)
+![Screenshot 2024-10-17 195017](https://github.com/user-attachments/assets/c9214b15-b10f-4038-a60a-381c7568b51a)
+![Screenshot 2024-10-17 195047](https://github.com/user-attachments/assets/3dab999d-74f2-455b-88e7-c8bd2d610fb7)
+![Screenshot 2024-10-17 195654](https://github.com/user-attachments/assets/4986d32b-8cdd-4f76-befa-da06e940b238)
+![Screenshot 2024-10-17 195643](https://github.com/user-attachments/assets/eb295f3b-c040-4bfc-8fda-f26aa6d85e19)
